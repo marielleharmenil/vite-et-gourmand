@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Menus - Vite & Gourmand</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <header>
+            <h1>Vite & Gourmand</h1>
+            <nav>
+                <a href="index.html">Accueil</a>
+                <a href="menus.html">Menus</a>
+                <a href="connexion.html">Connexion</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </header>
+        <main>
+                <h2>Nos menus</h2>
+
+                <section>
+                    <h3>Filtres</h3>
+                    <label for="theme">Thème :</label>
+                        <select id="theme">
+                         <option value="">Tous les thèmes</option>
+                         <option value="demonstration">Démonstration</option>
+                         <option value="test">Autre thème (test)</option>
+                        </select>
+
+                    <label for="regime">Régime alimentaire :</label>
+                        <select id="regime">
+                          <option value="">Tous les régimes</option>
+                          <option value="demonstration">Démonstration</option>
+                          <option value="test">Autre régime (test)</option>
+                        </select>
+
+                    <label for="personnes">Nombre de personnes :</label>
+                    <input type="number" id="personnes">
+
+                    <label for="prix-min">Prix minimum :</label>
+                    <input type="number" id="prix-min" min="0">
+
+                    <label for="prix-max">Prix maximum :</label>
+                    <input type="number" id="prix-max" min="0">
+                </section>
+                
+
+                <article id="menu-delice"
+                         data-prix="120" 
+                         data-personnes="4" 
+                         data-theme="demonstration" 
+                         data-regime="demonstration" >
+
+                    <h3>Menu Délice</h3>
+                    <ul>
+                        <li>Menu de démonstration</li>
+                        <li>Minimum : 4 personnes</li>
+                        <li>Prix : 120 €</li>
+                    </ul>
+                    <a href="menu-detail.html">Voir le détail</a>
+                </article>
+        </main>
+        <footer>
+            <p>Horaires : Du lundi au dimanche — horaires à définir</p>
+            <a href="mentions-legales.html">Mentions Légales</a>
+            <a href="cgv.html">CGV</a>
+        </footer>
+        <script src="js/menus.js"></script>
+    </body>
+</html>

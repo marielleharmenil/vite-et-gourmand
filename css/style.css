@@ -1,0 +1,54 @@
+/* =========================
+   STYLE GÉNÉRAL
+   ========================= */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   MISE EN PAGE
+   ========================= */
+
+header,
+main,
+footer {
+    padding: 20px;
+}
+
+
+/* =========================
+   EN-TÊTE ET NAVIGATION
+   ========================= */
+
+header, footer {
+    background-color: #f4e8dc;
+}
+
+nav a {
+    color: #5a3825;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+nav a:hover {
+    color: #000000;
+}
+
+ 
+/* =========================
+   IMAGES
+   ========================= */
+
+img {
+    width: 300px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
