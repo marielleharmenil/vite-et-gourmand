@@ -24,12 +24,22 @@ class Dish
     #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
+    /**
+     * @var Collection<int, Menu>
+     */
     #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'dishes')]
     private Collection $menus;
+
+    /**
+     * @var Collection<int, Allergen>
+     */
+    #[ORM\ManyToMany(targetEntity: Allergen::class, mappedBy: 'dishes')]
+    private Collection $allergens;
 
     public function __construct()
     {
         $this->menus = new ArrayCollection();
+        $this->allergens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,5 +98,10 @@ class Dish
     {
         $this->menus->removeElement($menu);
         return $this;
+    }
+
+    public function getAllergens(): Collection
+    {
+        return $this->allergens;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Allergen;
 use App\Entity\Dish;
 use App\Entity\Menu;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -26,11 +27,26 @@ class MenuFixtures extends Fixture
 
         $manager->persist($menu);
 
+        $gluten = new Allergen();
+        $gluten->setName('Gluten');
+
+        $lait = new Allergen();
+        $lait->setName('Lait');
+
+        $oeufs = new Allergen();
+        $oeufs->setName('Œufs');
+
+        $manager->persist($gluten);
+        $manager->persist($lait);
+        $manager->persist($oeufs);
+
         $entree = new Dish();
         $entree->setName('Velouté de saison');
         $entree->setType('Entrée');
         $entree->setDescription('Velouté préparé avec des légumes de saison.');
         $entree->addMenu($menu);
+
+        $lait->addDish($entree);
 
         $manager->persist($entree);
 
@@ -47,6 +63,10 @@ class MenuFixtures extends Fixture
         $dessert->setType('Dessert');
         $dessert->setDescription('Fondant au chocolat servi en dessert.');
         $dessert->addMenu($menu);
+
+        $gluten->addDish($dessert);
+        $lait->addDish($dessert);
+        $oeufs->addDish($dessert);
 
         $manager->persist($dessert);
 

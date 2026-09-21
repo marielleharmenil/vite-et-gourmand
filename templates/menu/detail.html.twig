@@ -25,6 +25,15 @@
             <article class="dish">
                 <h3>{{ dish.type }} — {{ dish.name }}</h3>
                 <p>{{ dish.description }}</p>
+
+                <p>
+                    <strong>Allergènes :</strong>
+                    {% for allergen in dish.allergens %}
+                        {{ allergen.name }}{% if not loop.last %}, {% endif %}
+                    {% else %}
+                        Aucun allergène renseigné
+                    {% endfor %}
+                </p>
             </article>
         {% else %}
             <p>Aucun plat renseigné pour ce menu.</p>
