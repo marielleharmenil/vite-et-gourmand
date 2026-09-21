@@ -46,9 +46,16 @@ class Menu
     #[ORM\ManyToMany(targetEntity: Dish::class, mappedBy: 'menus')]
     private Collection $dishes;
 
+    /**
+     * @var Collection<int, CustomerOrder>
+     */
+    #[ORM\OneToMany(targetEntity: CustomerOrder::class, mappedBy: 'menu')]
+    private Collection $customerOrders;
+
     public function __construct()
     {
         $this->dishes = new ArrayCollection();
+        $this->customerOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,5 +154,35 @@ class Menu
     public function getDishes(): Collection
     {
         return $this->dishes;
+    }
+
+    /**
+     * @return Collection<int, CustomerOrder>
+     */
+    public function getCustomerOrders(): Collection
+    {
+        return $this->customerOrders;
+    }
+
+    public function addCustomerOrder(CustomerOrder $customerOrder): static
+    {
+        if (!$this->customerOrders->contains($customerOrder)) {
+            $this->customerOrders->add($customerOrder);
+            $customerOrder->setMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerOrder(CustomerOrder $customerOrder): static
+    {
+        if ($this->customerOrders->removeElement($customerOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($customerOrder->getMenu() === $this) {
+                $customerOrder->setMenu(null);
+            }
+        }
+
+        return $this;
     }
 }
