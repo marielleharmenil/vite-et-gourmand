@@ -1,42 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail du menu - Vite & Gourmand{% endblock %}
+{% block title %}{{ menu.title }} - Vite & Gourmand{% endblock %}
 
 {% block body %}
 <main>
     <section class="menu-detail">
         <a href="{{ path('app_menu') }}">← Retour aux menus</a>
 
-        <h1>Menu de démonstration</h1>
+        <h1>{{ menu.title }}</h1>
 
-        <p>
-            Exemple temporaire utilisé pendant le développement.
-        </p>
+        <p>{{ menu.description }}</p>
 
         <h2>Informations</h2>
 
-        <p><strong>Thème :</strong> Classique</p>
-        <p><strong>Régime :</strong> Classique</p>
-        <p><strong>Nombre minimum :</strong> 4 personnes</p>
-        <p><strong>Prix :</strong> 120 €</p>
-        <p><strong>Stock disponible :</strong> 5 commandes</p>
-
-        <h2>Plats proposés</h2>
-
-        <ul>
-            <li>Entrée de démonstration</li>
-            <li>Plat de démonstration</li>
-            <li>Dessert de démonstration</li>
-        </ul>
-
-        <h2>Allergènes</h2>
-        <p>Informations de démonstration.</p>
+        <p><strong>Thème :</strong> {{ menu.theme }}</p>
+        <p><strong>Régime :</strong> {{ menu.regime }}</p>
+        <p><strong>Nombre minimum :</strong> {{ menu.minPeople }} personnes</p>
+        <p><strong>Prix :</strong> {{ menu.price }} €</p>
+        <p><strong>Stock disponible :</strong> {{ menu.stock }} commandes</p>
 
         <h2>Conditions du menu</h2>
-        <p>
-            Conditions temporaires de démonstration.
-            Elles seront remplacées par les données enregistrées en base.
-        </p>
+
+        <p>{{ menu.conditions }}</p>
 
         <a href="#">Commander ce menu</a>
     </section>
