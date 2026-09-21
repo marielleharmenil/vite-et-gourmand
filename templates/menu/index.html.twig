@@ -32,15 +32,26 @@
             <label for="personnes">Nombre minimum de personnes</label>
             <input type="number" id="personnes" min="1">
 
+            <label for="prix-min">Prix minimum</label>
+            <input type="number" id="prix-min" min="0">
+
             <label for="prix-max">Prix maximum</label>
             <input type="number" id="prix-max" min="0">
+
+            <p id="no-results" hidden>Aucun menu ne correspond à ces critères.</p>
         </div>
 
         <section class="menu-list">
             <h2>Menus disponibles</h2>
 
             {% for menu in menus %}
-                <article class="menu-card">
+                <article
+                    class="menu-card"
+                    data-theme="{{ menu.theme }}"
+                    data-regime="{{ menu.regime }}"
+                    data-people="{{ menu.minPeople }}"
+                    data-price="{{ menu.price }}"
+                >
                     <h3>{{ menu.title }}</h3>
 
                     <p>{{ menu.description }}</p>
@@ -60,4 +71,67 @@
         </section>
     </section>
 </main>
+
+<script>
+    const themeFilter = document.getElementById('theme');
+    const regimeFilter = document.getElementById('regime');
+    const peopleFilter = document.getElementById('personnes');
+    const minPriceFilter = document.getElementById('prix-min');
+    const maxPriceFilter = document.getElementById('prix-max');
+    const menuCards = document.querySelectorAll('.menu-card');
+    const noResults = document.getElementById('no-results');
+
+    function filterMenus() {
+        const selectedTheme = themeFilter.value;
+        const selectedRegime = regimeFilter.value;
+        const selectedPeople = Number(peopleFilter.value);
+        const selectedMinPrice = Number(minPriceFilter.value);
+        const selectedMaxPrice = Number(maxPriceFilter.value);
+
+        let visibleMenus = 0;
+
+        menuCards.forEach((card) => {
+            const menuTheme = card.dataset.theme;
+            const menuRegime = card.dataset.regime;
+            const menuPeople = Number(card.dataset.people);
+            const menuPrice = Number(card.dataset.price);
+
+            const matchesTheme =
+                selectedTheme === '' || menuTheme === selectedTheme;
+
+            const matchesRegime =
+                selectedRegime === '' || menuRegime === selectedRegime;
+
+            const matchesPeople =
+                peopleFilter.value === '' || menuPeople <= selectedPeople;
+
+            const matchesMinPrice =
+                minPriceFilter.value === '' || menuPrice >= selectedMinPrice;
+
+            const matchesMaxPrice =
+                maxPriceFilter.value === '' || menuPrice <= selectedMaxPrice;
+
+            const matches =
+                matchesTheme &&
+                matchesRegime &&
+                matchesPeople &&
+                matchesMinPrice &&
+                matchesMaxPrice;
+
+            card.hidden = !matches;
+
+            if (matches) {
+                visibleMenus++;
+            }
+        });
+
+        noResults.hidden = visibleMenus !== 0;
+    }
+
+    themeFilter.addEventListener('change', filterMenus);
+    regimeFilter.addEventListener('change', filterMenus);
+    peopleFilter.addEventListener('input', filterMenus);
+    minPriceFilter.addEventListener('input', filterMenus);
+    maxPriceFilter.addEventListener('input', filterMenus);
+</script>
 {% endblock %}
