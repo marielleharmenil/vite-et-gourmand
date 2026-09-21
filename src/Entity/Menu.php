@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MenuRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,6 +39,17 @@ class Menu
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $conditions = null;
+
+    /**
+     * @var Collection<int, Dish>
+     */
+    #[ORM\ManyToMany(targetEntity: Dish::class, mappedBy: 'menus')]
+    private Collection $dishes;
+
+    public function __construct()
+    {
+        $this->dishes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -129,5 +142,10 @@ class Menu
     {
         $this->conditions = $conditions;
         return $this;
+    }
+
+    public function getDishes(): Collection
+    {
+        return $this->dishes;
     }
 }

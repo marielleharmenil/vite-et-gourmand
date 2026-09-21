@@ -19,6 +19,17 @@
         <p><strong>Prix :</strong> {{ menu.price }} €</p>
         <p><strong>Stock disponible :</strong> {{ menu.stock }} commandes</p>
 
+        <h2>Composition du menu</h2>
+
+        {% for dish in menu.dishes %}
+            <article class="dish">
+                <h3>{{ dish.type }} — {{ dish.name }}</h3>
+                <p>{{ dish.description }}</p>
+            </article>
+        {% else %}
+            <p>Aucun plat renseigné pour ce menu.</p>
+        {% endfor %}
+
         <h2>Conditions du menu</h2>
 
         <p>{{ menu.conditions }}</p>
