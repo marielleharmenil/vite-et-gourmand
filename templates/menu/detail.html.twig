@@ -43,7 +43,7 @@
 
         <p>{{ menu.conditions }}</p>
 
-        <a href="#">Commander ce menu</a>
+        <a href="{{ path('app_order', {id: menu.id}) }}">Commander ce menu</a>
     </section>
 </main>
 {% endblock %}

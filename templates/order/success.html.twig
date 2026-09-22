@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de commande{% endblock %}
+
+{% block body %}
+<main>
+    <h1>Commande confirmée</h1>
+
+    {% for message in app.flashes('success') %}
+        <p><strong>{{ message }}</strong></p>
+    {% endfor %}
+
+    <section>
+        <h2>{{ order.menu.title }}</h2>
+
+        <p>
+            <strong>Commande n° :</strong>
+            {{ order.id }}
+        </p>
+
+        <p>
+            <strong>Nombre de personnes :</strong>
+            {{ order.people }}
+        </p>
+
+        <p>
+            <strong>Livraison :</strong>
+            {{ order.deliveryDate|date('d/m/Y') }}
+            à {{ order.deliveryTime|date('H:i') }}
+        </p>
+
+        <p>
+            <strong>Adresse :</strong>
+            {{ order.deliveryAddress }},
+            {{ order.deliveryPostalCode }}
+            {{ order.deliveryCity }}
+        </p>
+
+        <hr>
+
+        <h2>Détail du prix</h2>
+
+        <p>
+            Prix du menu :
+            {{ order.menuPrice|number_format(2, ',', ' ') }} €
+        </p>
+
+        <p>
+            Remise :
+            - {{ order.discount|number_format(2, ',', ' ') }} €
+        </p>
+
+        <p>
+            Frais de livraison :
+            {{ order.deliveryFee|number_format(2, ',', ' ') }} €
+        </p>
+
+        <p>
+            <strong>
+                Total :
+                {{ order.totalPrice|number_format(2, ',', ' ') }} €
+            </strong>
+        </p>
+
+        <p>
+            <strong>Statut :</strong>
+            {{ order.status }}
+        </p>
+    </section>
+
+    <p>
+        <a href="{{ path('app_menu') }}">Retour aux menus</a>
+    </p>
+</main>
+{% endblock %}

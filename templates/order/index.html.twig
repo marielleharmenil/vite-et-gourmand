@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commander - {{ menu.title }}{% endblock %}
+
+{% block body %}
+<main>
+    <h1>Commander : {{ menu.title }}</h1>
+
+    <section>
+        <h2>Votre menu</h2>
+        <p>{{ menu.description }}</p>
+        <p><strong>Minimum :</strong> {{ menu.minPeople }} personnes</p>
+        <p><strong>Prix pour {{ menu.minPeople }} personnes :</strong> {{ menu.price }} €</p>
+        <p><strong>Conditions :</strong> {{ menu.conditions }}</p>
+    </section>
+
+    {% if error %}
+        <p><strong>{{ error }}</strong></p>
+    {% endif %}
+
+    <form method="post" data-turbo="false">
+        <input
+            type="hidden"
+            name="_token"
+            value="{{ csrf_token('order_menu_' ~ menu.id) }}"
+        >
+
+        <h2>Informations de livraison</h2>
+
+        <p>
+            <label for="deliveryAddress">Adresse</label><br>
+            <input
+                id="deliveryAddress"
+                name="deliveryAddress"
+                type="text"
+                value="{{ user.address }}"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="deliveryPostalCode">Code postal</label><br>
+            <input
+                id="deliveryPostalCode"
+                name="deliveryPostalCode"
+                type="text"
+                value="{{ user.postalCode }}"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="deliveryCity">Ville</label><br>
+            <input
+                id="deliveryCity"
+                name="deliveryCity"
+                type="text"
+                value="{{ user.city }}"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="deliveryDate">Date de livraison</label><br>
+            <input
+                id="deliveryDate"
+                name="deliveryDate"
+                type="date"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="deliveryTime">Heure de livraison</label><br>
+            <input
+                id="deliveryTime"
+                name="deliveryTime"
+                type="time"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="people">Nombre de personnes</label><br>
+            <input
+                id="people"
+                name="people"
+                type="number"
+                min="{{ menu.minPeople }}"
+                value="{{ menu.minPeople }}"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="distanceKm">
+                Distance depuis Bordeaux (km)
+            </label><br>
+            <input
+                id="distanceKm"
+                name="distanceKm"
+                type="number"
+                min="0"
+                step="0.1"
+                value="0"
+            >
+        </p>
+
+        <p>
+            Livraison : 5 € + 0,59 €/km hors Bordeaux.
+        </p>
+
+        <p>
+            Une réduction de 10 % est appliquée à partir de
+            {{ menu.minPeople + 5 }} personnes.
+        </p>
+
+        <button type="submit">
+            Confirmer la commande
+        </button>
+    </form>
+</main>
+{% endblock %}
