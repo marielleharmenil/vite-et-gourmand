@@ -2,6 +2,9 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # L'administrateur peut tout faire comme un employé (exigence CDC, section 11)
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_EMPLOYEE
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
