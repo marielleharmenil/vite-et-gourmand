@@ -16,10 +16,44 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class EmployeeController extends AbstractController
 {
     #[Route('/orders', name: 'app_employee_orders', methods: ['GET'])]
-    public function orders(CustomerOrderRepository $orderRepository): Response
-    {
+    public function orders(
+        CustomerOrderRepository $orderRepository,
+        Request $request
+    ): Response {
+        $orders = $orderRepository->findBy([], ['createdAt' => 'DESC']);
+
+        $statusFilter = trim((string) $request->query->get('status'));
+        $clientFilter = mb_strtolower(trim((string) $request->query->get('client')));
+
+        if ($statusFilter !== '') {
+            $orders = array_filter(
+                $orders,
+                static fn (CustomerOrder $order): bool =>
+                    $order->getStatus() === $statusFilter
+            );
+        }
+
+        if ($clientFilter !== '') {
+            $orders = array_filter(
+                $orders,
+                static function (CustomerOrder $order) use ($clientFilter): bool {
+                    $user = $order->getUser();
+
+                    $searchableClient = mb_strtolower(
+                        $user->getFirstName() . ' ' .
+                        $user->getLastName() . ' ' .
+                        $user->getEmail()
+                    );
+
+                    return str_contains($searchableClient, $clientFilter);
+                }
+            );
+        }
+
         return $this->render('employee/index.html.twig', [
-            'orders' => $orderRepository->findBy([], ['createdAt' => 'DESC']),
+            'orders' => $orders,
+            'statusFilter' => $statusFilter,
+            'clientFilter' => (string) $request->query->get('client'),
         ]);
     }
 

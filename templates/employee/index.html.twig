@@ -14,8 +14,55 @@
         <div class="alert alert-danger">{{ message }}</div>
     {% endfor %}
 
+    <section>
+        <h2>Filtrer les commandes</h2>
+
+        <form method="get" action="{{ path('app_employee_orders') }}">
+            <div>
+                <label for="client">Client</label>
+                <input
+                    type="search"
+                    id="client"
+                    name="client"
+                    value="{{ clientFilter }}"
+                    placeholder="Nom, prénom ou e-mail"
+                >
+            </div>
+
+            <div>
+                <label for="status">Statut</label>
+                <select id="status" name="status">
+                    <option value="">Tous les statuts</option>
+
+                    {% for status in [
+                        'en attente',
+                        'acceptée',
+                        'en préparation',
+                        'en livraison',
+                        'livrée',
+                        'en attente de matériel',
+                        'terminée'
+                    ] %}
+                        <option
+                            value="{{ status }}"
+                            {% if statusFilter == status %}selected{% endif %}
+                        >
+                            {{ status|capitalize }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Filtrer</button>
+
+            <a href="{{ path('app_employee_orders') }}">
+                Réinitialiser
+            </a>
+        </form>
+    </section>
+
     {% if orders is empty %}
-        <p>Aucune commande enregistrée.</p>
+        <p>Aucune commande ne correspond aux critères sélectionnés.</p>
     {% else %}
         <div style="overflow-x:auto;">
             <table>
@@ -72,7 +119,14 @@
                                     value="{{ csrf_token('order-status-' ~ order.id) }}"
                                 >
 
-                                <select name="status">
+                                <label for="status-{{ order.id }}">
+                                    Modifier le statut
+                                </label>
+
+                                <select
+                                    id="status-{{ order.id }}"
+                                    name="status"
+                                >
                                     {% for status in [
                                         'en attente',
                                         'acceptée',
