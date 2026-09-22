@@ -1,0 +1,19 @@
+﻿<h1>Votre commande Vite & Gourmand est confirmée</h1>
+
+<p>Bonjour {{ order.user.firstName }},</p>
+
+<p>Nous avons bien enregistré votre commande n°{{ order.id }}.</p>
+
+<ul>
+    <li><strong>Menu :</strong> {{ order.menu.title }}</li>
+    <li><strong>Nombre de personnes :</strong> {{ order.people }}</li>
+    <li><strong>Date de livraison :</strong> {{ order.deliveryDate|date('d/m/Y') }}</li>
+    <li><strong>Heure :</strong> {{ order.deliveryTime|date('H:i') }}</li>
+    <li><strong>Adresse :</strong> {{ order.deliveryAddress }}, {{ order.deliveryPostalCode }} {{ order.deliveryCity }}</li>
+    <li><strong>Total :</strong> {{ order.totalPrice|number_format(2, ',', ' ') }} €</li>
+    <li><strong>Statut :</strong> {{ order.status }}</li>
+</ul>
+
+<p>Merci pour votre confiance.</p>
+
+<p>L'équipe Vite & Gourmand</p>
