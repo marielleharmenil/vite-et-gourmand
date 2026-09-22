@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte - Vite & Gourmand{% endblock %}
+
+{% block body %}
+<main>
+    <h1>Mon compte</h1>
+
+    <section>
+        <h2>Mes informations</h2>
+
+        <p><strong>Prénom :</strong> {{ user.firstName }}</p>
+        <p><strong>Nom :</strong> {{ user.lastName }}</p>
+        <p><strong>Email :</strong> {{ user.email }}</p>
+        <p><strong>Téléphone :</strong> {{ user.phone }}</p>
+        <p>
+            <strong>Adresse :</strong>
+            {{ user.address }}, {{ user.postalCode }} {{ user.city }}
+        </p>
+    </section>
+
+    <section>
+        <h2>Mes commandes</h2>
+
+        {% if orders is empty %}
+            <p>Vous n'avez aucune commande.</p>
+        {% else %}
+            {% for order in orders %}
+                <article>
+                    <h3>Commande n°{{ order.id }}</h3>
+
+                    <p><strong>Menu :</strong> {{ order.menu.title }}</p>
+                    <p><strong>Nombre de personnes :</strong> {{ order.people }}</p>
+                    <p><strong>Date :</strong> {{ order.deliveryDate|date('d/m/Y') }}</p>
+                    <p><strong>Heure :</strong> {{ order.deliveryTime|date('H:i') }}</p>
+                    <p><strong>Statut :</strong> {{ order.status }}</p>
+                    <p><strong>Total :</strong> {{ order.totalPrice|number_format(2, ',', ' ') }} €</p>
+                </article>
+                <hr>
+            {% endfor %}
+        {% endif %}
+    </section>
+</main>
+{% endblock %}
