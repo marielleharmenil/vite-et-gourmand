@@ -25,7 +25,12 @@
             <nav>
                 <a href="{{ path('app_home') }}">Accueil</a>
                 <a href="{{ path('app_menu') }}">Menus</a>
-                <a href="{{ path('app_login') }}">Connexion</a>
+                {% if app.user %}
+    <a href="{{ path('app_account') }}">Mon compte</a>
+    <a href="{{ path('app_logout') }}">Déconnexion</a>
+{% else %}
+    <a href="{{ path('app_login') }}">Connexion</a>
+{% endif %}
                 <a href="contact.html">Contact</a>
             </nav>
         </header>
