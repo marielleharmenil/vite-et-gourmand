@@ -19,6 +19,22 @@
         </p>
     </section>
 
+<section>
+    <h2>Modifier mes informations</h2>
+
+    {{ form_start(profileForm) }}
+        {{ form_row(profileForm.firstName) }}
+        {{ form_row(profileForm.lastName) }}
+        {{ form_row(profileForm.email) }}
+        {{ form_row(profileForm.phone) }}
+        {{ form_row(profileForm.address) }}
+        {{ form_row(profileForm.postalCode) }}
+        {{ form_row(profileForm.city) }}
+
+        <button type="submit">Enregistrer les modifications</button>
+    {{ form_end(profileForm) }}
+</section>
+
     <section>
         <h2>Mes commandes</h2>
 

@@ -6,6 +6,9 @@ use App\Entity\CustomerOrder;
 use App\Entity\Menu;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +20,8 @@ final class OrderController extends AbstractController
     public function order(
         Menu $menu,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -137,6 +141,16 @@ final class OrderController extends AbstractController
                     $entityManager->persist($order);
                     $menu->setStock($menu->getStock() - 1);
                     $entityManager->flush();
+                    $mailer->send(
+    (new TemplatedEmail())
+        ->from(new Address('no-reply@vite-gourmand.test', 'Vite & Gourmand'))
+        ->to((string) $user->getEmail())
+        ->subject('Confirmation de votre commande Vite & Gourmand')
+        ->htmlTemplate('emails/order_confirmation.html.twig')
+        ->context([
+            'order' => $order,
+        ])
+);
 
                     $this->addFlash(
                         'success',
