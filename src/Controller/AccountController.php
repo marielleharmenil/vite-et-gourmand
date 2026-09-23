@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CustomerOrder;
 use App\Form\ProfileFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,5 +36,38 @@ final class AccountController extends AbstractController
             'orders' => $orders,
             'profileForm' => $form,
         ]);
+    }
+
+    #[Route('/account/order/{id}/cancel', name: 'app_account_order_cancel', methods: ['POST'])]
+    public function cancelOrder(
+        CustomerOrder $order,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        if ($order->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($order->getStatus() !== 'en attente') {
+            $this->addFlash('error', 'Cette commande ne peut plus être annulée.');
+
+            return $this->redirectToRoute('app_account');
+        }
+
+        if (!$this->isCsrfTokenValid(
+            'cancel-order-'.$order->getId(),
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
+        $order->setStatus('annulée');
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Votre commande a été annulée.');
+
+        return $this->redirectToRoute('app_account');
     }
 }

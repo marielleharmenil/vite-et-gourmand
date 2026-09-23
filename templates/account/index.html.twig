@@ -19,21 +19,21 @@
         </p>
     </section>
 
-<section>
-    <h2>Modifier mes informations</h2>
+    <section>
+        <h2>Modifier mes informations</h2>
 
-    {{ form_start(profileForm) }}
-        {{ form_row(profileForm.firstName) }}
-        {{ form_row(profileForm.lastName) }}
-        {{ form_row(profileForm.email) }}
-        {{ form_row(profileForm.phone) }}
-        {{ form_row(profileForm.address) }}
-        {{ form_row(profileForm.postalCode) }}
-        {{ form_row(profileForm.city) }}
+        {{ form_start(profileForm) }}
+            {{ form_row(profileForm.firstName) }}
+            {{ form_row(profileForm.lastName) }}
+            {{ form_row(profileForm.email) }}
+            {{ form_row(profileForm.phone) }}
+            {{ form_row(profileForm.address) }}
+            {{ form_row(profileForm.postalCode) }}
+            {{ form_row(profileForm.city) }}
 
-        <button type="submit">Enregistrer les modifications</button>
-    {{ form_end(profileForm) }}
-</section>
+            <button type="submit">Enregistrer les modifications</button>
+        {{ form_end(profileForm) }}
+    </section>
 
     <section>
         <h2>Mes commandes</h2>
@@ -51,6 +51,22 @@
                     <p><strong>Heure :</strong> {{ order.deliveryTime|date('H:i') }}</p>
                     <p><strong>Statut :</strong> {{ order.status }}</p>
                     <p><strong>Total :</strong> {{ order.totalPrice|number_format(2, ',', ' ') }} €</p>
+
+                    {% if order.status == 'en attente' %}
+                        <form
+                            method="post"
+                            action="{{ path('app_account_order_cancel', {id: order.id}) }}"
+                            onsubmit="return confirm('Voulez-vous vraiment annuler cette commande ?');"
+                        >
+                            <input
+                                type="hidden"
+                                name="_token"
+                                value="{{ csrf_token('cancel-order-' ~ order.id) }}"
+                            >
+
+                            <button type="submit">Annuler la commande</button>
+                        </form>
+                    {% endif %}
                 </article>
                 <hr>
             {% endfor %}
